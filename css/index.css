@@ -1,0 +1,43 @@
+body {
+	background-image: url("../img/bg.jpg");
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.box {
+	display: block;
+	position: fixed;
+	width: 400px;
+	height: 100px;
+	top: 75px;
+	left: 375px;
+	border: 10px;
+	padding-bottom: 60px;
+	margin: 10 auto;
+	border-color: black;
+	border-radius: 5px;
+	background: rgba(220, 215, 214, 0);
+	text-align: center;
+	letter-spacing: 3px;
+	text-shadow: 1px 1px red;
+	font-size: 150px;
+}
+
+.list {
+	display: block;
+	position: fixed;
+	width: 380px;
+	height: 100px;
+	top: 235px;
+	left: 375px;
+	border: 10px;
+	padding: 10px;
+	margin: 10px 0px;
+	border-color: black;
+	border-radius: 5px;
+	background: rgba(220, 215, 214, 0);
+	text-align: center;
+	letter-spacing: 3px;
+	font-size: 50px;
+	color: red;
+}

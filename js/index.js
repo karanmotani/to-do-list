@@ -9,7 +9,7 @@ function Todo(todoName) {
   
   let name = todoName;
   let priority = 1;
-  let complete = true;
+  let complete = false;
   
   this.getName = function() {
     return name;
@@ -34,6 +34,8 @@ function Todo(todoName) {
     complete = obj.complete || this.getComplete();
     priority = obj.priority || this.getPriority();
   }
+
+  return this.getName(), this.getPriority(), this.getComplete();
 
 }
 
@@ -103,18 +105,28 @@ function User(username, useremail, userphone) {
 }
 
 // App Class - Singleton
-function App() {
-  let user = null;
-  this.todoList = new TodoList("My To-Do List");
-  
 
+MyApp = (function(){
+
+  let app = {};
+
+  app.state = {
+    name: ""
+  
+  };
+
+
+  let user = null;
+  app.todoList = new TodoList("My To-Do List");
+  
+  
   // Creates a new user for the application
   // params
   // @obj - Object
   //   + name - string 
   //   + email - string 
   //   + phone - string 
-  this.createUser = function(obj) {
+  app.createUser = function(obj) {
     let name = obj.name;
     let email = obj.email;
     let phone = obj.phone;
@@ -129,19 +141,47 @@ function App() {
 
   }
 
-/*  
-  this.getTodoList = function() {
-    return todoList;
+
+  // Callback for user input
+
+  function _onKeyUp(evt){
+
+    //console.log(this.id);
+
+    switch(this.id){
+
+      case "todoName":
+      app.state.name = this.value;
+      break;
+
+    }
+
+    // console.log(app.state);
+
   }
-*/
 
-}
+  // Callback for adding, Updating and Removing To-Dos
+
+  function _getInputs(evt) {
+
+    let abc = app.state.name;
+    var ncp = app.todoList.addTodo(new Todo(abc));
+    var abcd = app.todoList.getTodos()[0].getName();
+    $('.list').append(abcd);
+
+  }
 
 
-// Creates a new user for the application
+  app.init = function(){
 
-let MyApp = new App();
+    $('#submit').click(_getInputs);
+    $("input.userInputs").keyup(_onKeyUp);
 
+  }
+
+  return app;
+
+})();
 
 
 // Start test suite;
@@ -151,27 +191,3 @@ MyApp.createUser({
   email : "karan.motani94@gmail.com",
   phone : "+1 214-906-3353"
 });
-
-
-MyApp.todoList.addTodo(new Todo("Eat"));
-MyApp.todoList.addTodo(new Todo("Sleep"));
-MyApp.todoList.addTodo(new Todo("Code"));
-MyApp.todoList.addTodo(new Todo("Repeat"));
-
-console.log(MyApp.todoList.getTodos());
-
-MyApp.todoList.removeTodo("2")
-
-console.log(MyApp.todoList.getTodos());
-
-let obj = {
-  name: "Don't repeat",
-  complete: true,
-  priority: 2
-}
-
-MyApp.todoList.updateTodo(2, obj);
-
-console.log(MyApp.todoList.getTodos()[2].getName());
-console.log(MyApp.todoList.getTodos()[2].getPriority());
-console.log(MyApp.todoList.getTodos()[2].getComplete());
