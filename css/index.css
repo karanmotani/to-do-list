@@ -4,12 +4,40 @@ body {
 	background-repeat: no-repeat;
 }
 
+
+.todo {
+	display: inline;
+}
+
+.todo button {
+	opacity: 0.1;
+	/*size: 5px;*/
+}
+
+.todoInput {
+	width:60%;
+	display: inline;
+}
+
+.todoCheckbox {
+	width:10%;
+	display: inline;
+}
+
+.todoRemove {
+	width: 10%;
+	display: inline;
+	opacity: 0.1;
+	margin-left: 20px;
+	
+}
+
 .box {
 	display: block;
 	position: fixed;
 	width: 400px;
 	height: 100px;
-	top: 75px;
+	top: 25px;
 	left: 375px;
 	border: 10px;
 	padding-bottom: 60px;
@@ -18,9 +46,21 @@ body {
 	border-radius: 5px;
 	background: rgba(220, 215, 214, 0);
 	text-align: center;
-	letter-spacing: 3px;
-	text-shadow: 1px 1px red;
 	font-size: 150px;
+}
+
+.time {
+	color: white;
+	letter-spacing: 3px;
+	text-shadow: 1px 1px white;
+	font-size: 125px;
+}
+
+.greet {
+	color: white;
+	letter-spacing: 3px;
+	text-shadow: 1px 1px white;
+	font-size: 50px;
 }
 
 .list {
@@ -38,6 +78,56 @@ body {
 	background: rgba(220, 215, 214, 0);
 	text-align: center;
 	letter-spacing: 3px;
-	font-size: 50px;
-	color: red;
+	font-size: 25px;
+	color: white;
 }
+
+.wrapper {
+	display: block;
+	flex-direction: column;
+	position: fixed;
+	width: 200px;
+	height: 200px;
+	top: 300px;
+	left: 485px;
+	border: 10px;
+	padding: 10px;
+	margin: 5px auto;
+	border-color: black;
+	border-radius: 5px;
+	background: rgba(220, 215, 214, 0.1);
+	text-align: center;
+	letter-spacing: 3px;
+	font-size: 25px;
+	color: white;
+/*	align-items: : left;
+	align-content: left;
+*/}
+
+/*
+.todoCheck {
+	display: block;
+	position: fixed;
+	width: 25px;
+	height: 200px;
+	top: 300px;
+	left: 485px;
+	border: 10px;
+	padding: 10px;
+	margin: 5px;
+	border-color: black;
+	border-radius: 5px;
+	background: rgba(220, 215, 214, 0);
+	text-align: center;
+	letter-spacing: 3px;
+	font-size: 25px;
+	color: white;
+	align-items: left;
+}
+*/
+
+input {
+	width: 60%;
+}
+
+

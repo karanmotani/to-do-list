@@ -119,7 +119,7 @@ MyApp = (function(){
   let user = null;
   app.todoList = new TodoList("My To-Do List");
   
-  
+
   // Creates a new user for the application
   // params
   // @obj - Object
@@ -146,8 +146,6 @@ MyApp = (function(){
 
   function _onKeyUp(evt){
 
-    //console.log(this.id);
-
     switch(this.id){
 
       case "todoName":
@@ -156,18 +154,52 @@ MyApp = (function(){
 
     }
 
-    // console.log(app.state);
-
   }
+
 
   // Callback for adding, Updating and Removing To-Dos
 
   function _getInputs(evt) {
 
-    let abc = app.state.name;
-    var ncp = app.todoList.addTodo(new Todo(abc));
-    var abcd = app.todoList.getTodos()[0].getName();
-    $('.list').append(abcd);
+    let name = app.state.name;
+    app.todoList.addTodo(new Todo(name));
+    console.log(app.todoList.getTodos());
+
+    let size = app.todoList.getTodos().length;
+    let index = app.todoList.getTodos().length;
+
+    // Clear my new todo input element
+    $("#todoName").val("");
+
+    let todoId = "todo"+(size-1);
+
+    $('#todoList').append(
+      "<div class='todo' id='" + todoId +"'>" +
+        "<input type='text' value='" + name + "' class='todoInput' id='input" + (size-1) +" ' />" +
+        "<input type='checkbox' class='todoCheckbox' data-index='"+ index +"' id='checkbox1' />" +
+        "<button button-index='"+ index +"' ><i class='fa fa-times-circle' aria-hidden='true' class='todoRemove'></i></button>" +
+      "</div>"
+    );
+    
+    
+    $('div#'+todoId +" > input[type=checkbox]").on('change', function() {  
+      let index = $(this).attr('data-index');
+      console.log(index);
+      app.todoList.updateTodo(index, {complete: true});
+      console.log("Toggled todo with index : " + index);
+    });
+
+
+    $('div#'+todoId +" > button").on('click', function() {
+      let buttonIndex = $(this).attr('button-index');
+      console.log("Touched: " + buttonIndex);
+      app.todoList.removeTodo(buttonIndex-1);
+      $('div#'+todoId).remove();
+
+      console.log("Removed todo with index : " + buttonIndex);
+      console.log(app.todoList.getTodos());
+    });
+      
 
   }
 
