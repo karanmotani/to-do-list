@@ -67,7 +67,7 @@ function TodoList(todoListName) {
   // @ index - index of the Todo to be removed
   this.removeTodo = function(index) {
     if(index < todos.length) {
-      todos.splice(index, 1);
+      delete todos[index];
     }
   }
 
@@ -173,27 +173,31 @@ MyApp = (function(){
 
     let todoId = "todo"+(size-1);
 
+    // Creating i/p field, checkbox and remove button for new todo element
     $('#todoList').append(
       "<div class='todo' id='" + todoId +"'>" +
         "<input type='text' value='" + name + "' class='todoInput' id='input" + (size-1) +" ' />" +
-        "<input type='checkbox' class='todoCheckbox' data-index='"+ index +"' id='checkbox1' />" +
-        "<button button-index='"+ index +"' ><i class='fa fa-times-circle' aria-hidden='true' class='todoRemove'></i></button>" +
+        "<input type='checkbox' class='todoCheckbox' data-index='"+ (index-1) +"' id='checkbox1' />" +
+        "<button button-index='"+ (index-1) +"' ><i class='fa fa-times-circle' aria-hidden='true' class='todoRemove'></i></button>" +
       "</div>"
     );
     
     
+    // The to-do item checked done
     $('div#'+todoId +" > input[type=checkbox]").on('change', function() {  
       let index = $(this).attr('data-index');
-      console.log(index);
       app.todoList.updateTodo(index, {complete: true});
+      console.log(app.todoList.getTodos()[index].getName());
       console.log("Toggled todo with index : " + index);
     });
 
-
+    // Removing the To-do item from the list
     $('div#'+todoId +" > button").on('click', function() {
       let buttonIndex = $(this).attr('button-index');
       console.log("Touched: " + buttonIndex);
-      app.todoList.removeTodo(buttonIndex-1);
+
+      console.log(app.todoList.getTodos()[buttonIndex].getName());
+      app.todoList.removeTodo(buttonIndex);
       $('div#'+todoId).remove();
 
       console.log("Removed todo with index : " + buttonIndex);
@@ -202,7 +206,6 @@ MyApp = (function(){
       
 
   }
-
 
   app.init = function(){
 

@@ -3,9 +3,7 @@ function dispTime() {
   var time = new Date();
   var hour = time.getHours();
   var minute = time.getMinutes();
-  var second = time.getSeconds();
-  // var temp = '' + ((hour > 12) ? hour - 12 : hour);
-  temp = '' + hour;
+  var temp = '' + ((hour > 12) ? hour - 12 : hour);
 
   if (hour == 0) {
     temp = '12';
@@ -15,16 +13,7 @@ function dispTime() {
 
   // temp += ((second < 10) ? ':0' : ':') + second;
   // temp += (hour >= 12) ? ' P.M.' : ' A.M.';
-  // temp += (hour <= 12) ? 'Good Morning' : 'Good Afternoon';
-
-  // if(hour >= 6 && hour <=11)
-  //   temp += 'Good Morning';
-  // else if(hour >= 12 && hour <= 17)
-  //   temp += 'Good Afternoon';
-  // else if(hour >= 18 && hour <=5)
-  //   temp += 'Good Evening';
   
-    
   return temp;
 }
 
@@ -43,8 +32,6 @@ function dispGreet() {
     
   return greeting;
 }
-
-console.log(dispGreet());
 
 setInterval(function () {
 	$('.time').html(dispTime());
