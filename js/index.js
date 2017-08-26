@@ -10,6 +10,7 @@ function Todo(todoName) {
   let name = todoName;
   let priority = 1;
   let complete = false;
+  let id =  "todo-" + Math.round((new Date()).getTime() / 1000);
   
   this.getName = function() {
     return name;
@@ -23,6 +24,10 @@ function Todo(todoName) {
     return complete;
   }
 
+  this.getID = function() {
+    return id;
+  }
+
   this.update = function(todo) {
     let obj = {
       name: todo.name,
@@ -30,14 +35,23 @@ function Todo(todoName) {
       priority: todo.priority
     };
   
-    name = obj.name || this.getName();
-    complete = obj.complete || this.getComplete();
+    if(obj.complete != undefined) {
+      complete = obj.complete;
+    }
+
+    if(obj.name !== undefined) {
+      name = obj.name;
+    }
+
+//    name = obj.name || this.getName(); 
     priority = obj.priority || this.getPriority();
   }
 
-  return this.getName(), this.getPriority(), this.getComplete();
+ // return this.getName(), this.getPriority(), this.getComplete();
 
 }
+
+
 
 // TodoList Class
 // properties:
@@ -67,7 +81,8 @@ function TodoList(todoListName) {
   // @ index - index of the Todo to be removed
   this.removeTodo = function(index) {
     if(index < todos.length) {
-      delete todos[index];
+//      delete todos[index];
+        todos.splice(index, 1);
     }
   }
 
@@ -77,9 +92,11 @@ function TodoList(todoListName) {
   // @ todoObj - the Todo Obj that is to be updated
   this.updateTodo = function(index, todoObj) {
     if(index < todos.length && todoObj) {
+
+      console.log(todoObj);
+      console.log(index);
       let todo = todos[index];
-      todo.update(todoObj);
-      return todo;
+      return todo.update(todoObj);
     }
 
     return false;
@@ -87,8 +104,12 @@ function TodoList(todoListName) {
 
 
   this.getTodos = function() {
-        return todos;
-    }
+    return todos;
+  }
+
+  this.sortTodos = function(sortingArray) {
+    return (todos = todos.sort(sortingArray));
+  }
 
 }
 
@@ -103,6 +124,8 @@ function User(username, useremail, userphone) {
   let email = useremail;
   let phone = userphone;
 }
+
+
 
 // App Class - Singleton
 
@@ -143,73 +166,218 @@ MyApp = (function(){
 
 
   // Callback for user input
+  // params
+  // @evt - Native Keyup Event
 
-  function _onKeyUp(evt){
+  function _onKeyUp(evt) {
 
-    switch(this.id){
-
-      case "todoName":
       app.state.name = this.value;
-      break;
+  
+  }
+
+
+  // Adding new Todo to the application
+  // params
+  // @evt - Native Click Event
+
+  function _AddTodo(evt) {
+  
+    let inputName = app.state.name;
+
+    $("#todoName").val("");
+    app.state.name = "";
+
+    if(!inputName)
+      return;
+
+    app.todoList.addTodo(new Todo(inputName));
+    app.render();
+  }
+
+
+  // Remove a todo from application
+  // params
+  // @evt - Native Click Event
+
+  function _RemoveTodo(evt) {
+
+    let todoIndex = $('.todo-Remove').index(evt.target);
+    console.log(todoIndex);
+
+    app.todoList.removeTodo(todoIndex);
+    app.render();
+
+  }
+
+
+  // Updating complete status of todo item
+  // params
+  // @evt - Native Click Event
+
+  function _CheckTodo(evt) {
+
+    let todoIndex = $('.todo-Check').index(evt.target);
+    let complete = $(evt.target).is(':checked');
+    
+    console.log('Getting status before: ' + app.todoList.getTodos()[todoIndex].getComplete());
+   
+    app.todoList.updateTodo(todoIndex, {complete: complete});
+
+    console.log('Getting status after: ' + app.todoList.getTodos()[todoIndex].getComplete());
+    app.render();
+
+  }
+
+
+  // Changing the name of the todo item
+  // params
+  // @evt - Native Blur Event
+
+  function _EditTodo(evt) {
+
+    let editName = evt.target.value;
+    let todoIndex = $('.todo-Name').index(evt.target);
+
+    console.log(todoIndex);
+    app.todoList.updateTodo(todoIndex, {name: editName});
+    app.render();
+
+  }
+
+
+  // Changing the name of the todo item
+  // params
+  // @evt - Native Keyup Event
+
+  function _EditTodoEnter(evt) {
+
+    if(evt.keyCode == 13) {
+
+      let editName = evt.target.value;
+      let todoIndex = $('.todo-Name').index(evt.target);
+      app.todoList.updateTodo(todoIndex, {name: editName});
+      app.render();
 
     }
 
   }
 
 
-  // Callback for adding, Updating and Removing To-Dos
+  // Changing the priority of the todo item
+  // params
+  // @evt - Native Blur Event
 
-  function _getInputs(evt) {
+  function _EditPriority(evt) {
 
-    let name = app.state.name;
-    app.todoList.addTodo(new Todo(name));
-    console.log(app.todoList.getTodos());
-
-    let size = app.todoList.getTodos().length;
-    let index = app.todoList.getTodos().length;
-
-    // Clear my new todo input element
-    $("#todoName").val("");
-
-    let todoId = "todo"+(size-1);
-
-    // Creating i/p field, checkbox and remove button for new todo element
-    $('#todoList').append(
-      "<div class='todo' id='" + todoId +"'>" +
-        "<input type='text' value='" + name + "' class='todoInput' id='input" + (size-1) +" ' />" +
-        "<input type='checkbox' class='todoCheckbox' data-index='"+ (index-1) +"' id='checkbox1' />" +
-        "<button button-index='"+ (index-1) +"' ><i class='fa fa-times-circle' aria-hidden='true' class='todoRemove'></i></button>" +
-      "</div>"
-    );
+    let editPriority = evt.target.value;
+    let todoIndex = $('.todo-Priority').index(evt.target);
     
+    app.todoList.updateTodo(todoIndex, {priority: editPriority}); 
     
-    // The to-do item checked done
-    $('div#'+todoId +" > input[type=checkbox]").on('change', function() {  
-      let index = $(this).attr('data-index');
-      app.todoList.updateTodo(index, {complete: true});
-      console.log(app.todoList.getTodos()[index].getName());
-      console.log("Toggled todo with index : " + index);
-    });
 
-    // Removing the To-do item from the list
-    $('div#'+todoId +" > button").on('click', function() {
-      let buttonIndex = $(this).attr('button-index');
-      console.log("Touched: " + buttonIndex);
+    function sortingArray(a, b) {
+      return b.getPriority() - a.getPriority();
+    }
 
-      console.log(app.todoList.getTodos()[buttonIndex].getName());
-      app.todoList.removeTodo(buttonIndex);
-      $('div#'+todoId).remove();
-
-      console.log("Removed todo with index : " + buttonIndex);
-      console.log(app.todoList.getTodos());
-    });
-      
+    app.todoList.sortTodos(sortingArray);
+    app.render();
 
   }
 
-  app.init = function(){
 
-    $('#submit').click(_getInputs);
+  // Changing the priority of the todo item
+  // params
+  // @evt - Native Keyup Event
+
+  function _EditPriorityEnter(evt) {
+
+    if(evt.keyCode == 13) {
+
+      let editPriority = evt.target.value;
+      let todoIndex = $('.todo-Priority').index(evt.target);
+     
+      app.todoList.updateTodo(todoIndex, {priority: editPriority});
+      
+      function sortingArray(a, b) {
+        return b.getPriority() - a.getPriority();
+      }
+
+      app.todoList.sortTodos(sortingArray);
+      app.render();
+
+    }
+
+  }
+
+
+  app.createTodoView = function(todo, index) {
+
+    let check = "";
+
+    if(todo.getComplete() === true)
+      check = "checked"
+
+    return ( 
+      "<div class='todo'>" +
+        "<input type='checkbox' class='todo-Check' value='None' data-id='" + todo.getID() + "' data-index='" + index + "' " + check + "/>" +
+        "<input type='text' class='todo-Name' value='" + todo.getName() + "' data-id='"+todo.getID()+"' data-index='"+index+"'/>" +
+        "<button class='todo-Remove' data-id='"+todo.getID()+"' data-index='"+index+"'>X</button>" +
+        "<input type='text' class='todo-Priority' value = '" + todo.getPriority() + "' data-id='" + todo.getID() + "' data-index='" + index + "'/>" +
+      "</div>"
+    );
+  }
+
+
+  app.removeListeners = function() {
+    $('.todo-Remove').off('click', _RemoveTodo);
+    $('.todo-Check').off('click', _CheckTodo);
+    $('.todo-Name')
+      .off('keyup', _EditTodoEnter)
+      .off('blur', _EditTodo);
+    $('.todo-Priority')
+      .off('keyup', _EditPriorityEnter)
+      .off('blur', _EditPriority);
+  }
+
+
+  app.attachListeners = function() {
+    $('.todo-Remove').on('click', _RemoveTodo);
+    $('.todo-Check').on('click', _CheckTodo);
+    $('.todo-Name')
+      .on('keyup', _EditTodoEnter)
+      .on('blur', _EditTodo);
+    $('.todo-Priority')
+      .on('keyup', _EditPriorityEnter)
+      .on('blur', _EditPriority);
+  }
+
+
+  app.render = function() {
+
+    let list = app.todoList.getTodos();
+
+    let todoView = 
+      list.map(function(item, index){          
+        return( 
+          app.createTodoView(item, index)
+        )
+    });
+
+    app.removeListeners();
+      
+    app.$todos.html(todoView);
+
+    app.attachListeners();
+
+  } 
+
+
+
+  app.init = function() {
+
+    app.$addTodoButton = $('#submit');
+    app.$todos = $('#todoList')
+    app.$addTodoButton.click(_AddTodo);
     $("input.userInputs").keyup(_onKeyUp);
 
   }
@@ -217,12 +385,3 @@ MyApp = (function(){
   return app;
 
 })();
-
-
-// Start test suite;
-
-MyApp.createUser({
-  name : "Karan Motani",
-  email : "karan.motani94@gmail.com",
-  phone : "+1 214-906-3353"
-});
