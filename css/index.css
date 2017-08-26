@@ -9,28 +9,56 @@ body {
 	display: inline;
 }
 
+
 .todo button {
 	opacity: 0.1;
-	/*size: 5px;*/
 }
 
-.todoInput {
-	width:60%;
+.todo button:hover {
+	opacity: 1;
+	background-color: red;
+	border: none;
+	border-radius: 5px;
+}
+
+.todo .todo-Name {
+	background-color: transparent;
+	border-color: transparent;
+}
+
+.todo .todo-Check:hover {
+	border-color: black;
+}
+
+.todo-Name {
+	width:50%;
 	display: inline;
+	margin-left: 3px; 
 }
 
-.todoCheckbox {
+
+.todo-Check {
 	width:10%;
 	display: inline;
 }
 
-.todoRemove {
+
+.todo-Remove {
 	width: 10%;
 	display: inline;
 	opacity: 0.4;
-	margin-left: 20px;
-	
+	margin-left: 5px;
 }
+
+
+.todo-Priority {
+	width:10%;
+	display: inline;
+	margin-left: 5px; 
+	background-color: transparent;
+	border-color: transparent;
+}
+
 
 .box {
 	display: block;
@@ -49,6 +77,7 @@ body {
 	font-size: 150px;*/
 }
 
+
 .time {
 	font-family: Bookman, serif;
 	margin-left: 70px;
@@ -58,6 +87,7 @@ body {
 	font-size: 135px;
 }
 
+
 .greet {
 	font-family: Georgia, serif;
 	color: white;
@@ -65,6 +95,7 @@ body {
 	/*text-shadow: 1px 1px white;*/
 	font-size: 50px;
 }
+
 
 .list {
 	display: block;
@@ -85,6 +116,7 @@ body {
 	color: white;
 }
 
+
 .wrapper {
 	display: block;
 	flex-direction: column;
@@ -104,6 +136,7 @@ body {
 	font-size: 25px;
 	color: white;
 }
+
 
 input {
 	width: 60%;
