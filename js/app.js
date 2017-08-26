@@ -1,9 +1,9 @@
 
 function dispTime() {
-  var time = new Date();
-  var hour = time.getHours();
-  var minute = time.getMinutes();
-  var temp = '' + ((hour > 12) ? hour - 12 : hour);
+  let time = new Date();
+  let hour = time.getHours();
+  let minute = time.getMinutes();
+  let temp = '' + ((hour > 12) ? hour - 12 : hour);
 
   if (hour == 0) {
     temp = '12';
@@ -13,25 +13,29 @@ function dispTime() {
 
   // temp += ((second < 10) ? ':0' : ':') + second;
   // temp += (hour >= 12) ? ' P.M.' : ' A.M.';
-  
+
   return temp;
 }
 
 function dispGreet() {
-  var time = new Date();
-  var hour = time.getHours();
-  var greeting = '';
+  let time1 = new Date();
+  let hour = time1.getHours();
+  let greeting = '';
   
   if(hour >= 6 && hour <=11)
     greeting += 'Good Morning';
+  
   else if(hour >= 12 && hour <= 17)
     greeting += 'Good Afternoon';
-  else if(hour >= 18 && hour <=5)
-    greeting += 'Good Evening';
   
-    
+  else
+    greeting += 'Good Evening';
+
   return greeting;
 }
+
+// $('.time').html(dispTime());
+// $('.greet').html(dispGreet());
 
 setInterval(function () {
 	$('.time').html(dispTime());
@@ -40,10 +44,6 @@ setInterval(function () {
 setInterval(function () {
   $('.greet').html(dispGreet());
 }, 1000);
-
-$(document).ready(dispTime);
-$(document).ready(dispGreet);
-
 
 
 
@@ -55,3 +55,5 @@ $('#add').on('click', function() {
 }
 
 $(document).ready(clickTodo);
+$(document).ready(dispTime);
+$(document).ready(dispGreet);
