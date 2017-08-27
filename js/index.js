@@ -68,9 +68,9 @@ function TodoList(todoListName) {
   // @ todo - Todo()
   this.addTodo = function(todo) {
     if(todo instanceof Todo){
-        todos.push(todo);
-        return todos;
-      }
+      todos.push(todo);
+      return todos;
+    }
 
     return false;
 
@@ -134,7 +134,8 @@ MyApp = (function(){
   let app = {};
 
   app.state = {
-    name: ""
+    name: "",
+    listName: ""
   
   };
 
@@ -142,6 +143,60 @@ MyApp = (function(){
   let user = null;
   app.todoList = new TodoList("My To-Do List");
   
+  
+/*
+  // Adds a new TodoList to the application
+  // params
+  // @evt - Native Click Event
+
+  app.addTodoList = function(evt) {
+    // app.todoList = new TodoList(todoListName);
+    let todoListName1 = app.state.listName;
+
+    console.log(app.state.listName);
+
+    // $("#todoListName").val("");
+    // app.state.listName = "";
+
+    if(!todoListName1)
+      return;
+    
+    // app.todoList = new TodoList(todoListName);
+    // console.log(app.todoList)
+    // lists.push(app.todoList);
+    // console.log(lists);
+
+
+
+  }
+
+*/
+
+
+
+  // Callback for user input
+  // params
+  // @evt - Native Keyup Event
+
+  function _onKeyUp(evt) {
+
+      // switch(this.id) {
+
+      // case "todoListName":
+      app.state.name = this.value;
+      // break;
+
+      // case "todoName":
+      // app.state.listName = this.value;
+      // break;
+    
+    // }
+
+  
+  }
+
+
+
 
   // Creates a new user for the application
   // params
@@ -165,15 +220,6 @@ MyApp = (function(){
   }
 
 
-  // Callback for user input
-  // params
-  // @evt - Native Keyup Event
-
-  function _onKeyUp(evt) {
-
-      app.state.name = this.value;
-  
-  }
 
 
   // Adding new Todo to the application
@@ -273,7 +319,6 @@ MyApp = (function(){
     let todoIndex = $('.todo-Priority').index(evt.target);
     
     app.todoList.updateTodo(todoIndex, {priority: editPriority}); 
-    
 
     function sortingArray(a, b) {
       return b.getPriority() - a.getPriority();
@@ -318,12 +363,12 @@ MyApp = (function(){
       check = "checked"
 
     return ( 
-      "<div class='todo'>" +
-        "<input type='checkbox' class='todo-Check' value='None' data-id='" + todo.getID() + "' data-index='" + index + "' " + check + "/>" +
-        "<input type='text' class='todo-Name' value='" + todo.getName() + "' data-id='"+todo.getID()+"' data-index='"+index+"'/>" +
-        "<button class='todo-Remove' data-id='"+todo.getID()+"' data-index='"+index+"'>X</button>" +
-        "<input type='text' class='todo-Priority' value = '" + todo.getPriority() + "' data-id='" + todo.getID() + "' data-index='" + index + "'/>" +
-      "</div>"
+        "<div class='todo'>"
+    +     "<input type='checkbox' class='todo-Check' value='None' data-id='" + todo.getID() + "' data-index='" + index + "' " + check + "/>"
+    +     "<input type='text' class='todo-Name' value='" + todo.getName() + "' data-id='"+todo.getID()+"' data-index='"+index+"'/>"
+    +     "<button class='todo-Remove' data-id='"+todo.getID()+"' data-index='"+index+"'>X</button>"
+    +     "<input type='text' class='todo-Priority' value = '" + todo.getPriority() + "' data-id='" + todo.getID() + "' data-index='" + index + "'/>"
+    +   "</div>"
     );
   }
 
@@ -376,9 +421,12 @@ MyApp = (function(){
   app.init = function() {
 
     app.$addTodoButton = $('#submit');
+    // app.$addTodoListButton = $('#addTodoList');
     app.$todos = $('#todoList')
     app.$addTodoButton.click(_AddTodo);
+    // app.$addTodoListButton.click(app.addTodoList());
     $("input.userInputs").keyup(_onKeyUp);
+    // $("input.todoListInputs").keyup(_onKeyUp);
 
   }
 
