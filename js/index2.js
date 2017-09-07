@@ -52,23 +52,23 @@ function Todo(todoName) {
 }
 
 
-function lists() {
-  let todolists = [];
+// function lists() {
+//   let todolists = [];
 
 
-  // Adds todo list item to todos array
-  // params
-  // @ todolist - TodoList()
-  this.addTodoList = function(todolist) {
-    if(todolist instanceof TodoList) {
-      todolists.push(todolist);
-      return todolists;
-    }
+//   // Adds todo list item to todos array
+//   // params
+//   // @ todolist - TodoList()
+//   this.addTodoList = function(todolist) {
+//     if(todolist instanceof TodoList) {
+//       todolists.push(todolist);
+//       return todolists;
+//     }
 
-    return false;
+//     return false;
 
-  }
-}
+//   }
+// }
 
 
 // TodoList Class
@@ -159,7 +159,8 @@ MyApp = (function(){
 
 
   let user = null;
-  app.lists = [];
+  app.todoList = [];
+  app.lists = null;
   // app.todoList = new TodoList("My To-Do List");
   
   
@@ -170,8 +171,8 @@ MyApp = (function(){
 
   function _addTodoList (evt) {
     // app.todoList = new TodoList(todoListName);
+    
     let todoListName = app.state.listName;
-
     console.log(todoListName);
 
     // $("#todoListName").val("");
@@ -180,16 +181,30 @@ MyApp = (function(){
     if(!todoListName)
       return;
     
-    let todoList = new TodoList(todoListName);
-    console.log(todoList)
-    app.lists.push(todoList);
+    app.todoList.push(new TodoList(todoListName));
+    let index = app.todoList.length - 1;
+    
+    console.log(index);
+    
+    app.lists = app.todoList[index];
+
     console.log(app.lists);
 
-    $('#todo-list').append(todoListName);
+    $('#todo-list').append(`<input type='radio' id='todoLists' checked name='lists' value=${index}>${todoListName}`);
+    $('#todoListName').val("");
 
-
+    app.render();
 
   }
+
+
+
+  function _switchTodoList(evt) {
+    let index = $(evt.target).val();
+    app.lists = app.todoList[index];
+    app.render();
+  }
+
 
 
 
@@ -257,7 +272,7 @@ MyApp = (function(){
     if(!inputName)
       return;
 
-    app.lists.todoList.addTodo(new Todo(inputName));
+    app.lists.addTodo(new Todo(inputName));
     app.render();
   }
 
@@ -271,7 +286,7 @@ MyApp = (function(){
     let todoIndex = $('.todo-Remove').index(evt.target);
     console.log(todoIndex);
 
-    app.lists.todoList.removeTodo(todoIndex);
+    app.lists.removeTodo(todoIndex);
     app.render();
 
   }
@@ -288,7 +303,7 @@ MyApp = (function(){
     
     console.log('Getting status before: ' + app.lists.todoList.getTodos()[todoIndex].getComplete());
    
-    app.lists.todoList.updateTodo(todoIndex, {complete: complete});
+    app.lists.updateTodo(todoIndex, {complete: complete});
 
     console.log('Getting status after: ' + app.lists.todoList.getTodos()[todoIndex].getComplete());
     app.render();
@@ -306,7 +321,7 @@ MyApp = (function(){
     let todoIndex = $('.todo-Name').index(evt.target);
 
     console.log(todoIndex);
-    app.lists.todoList.updateTodo(todoIndex, {name: editName});
+    app.lists.updateTodo(todoIndex, {name: editName});
     app.render();
 
   }
@@ -322,7 +337,7 @@ MyApp = (function(){
 
       let editName = evt.target.value;
       let todoIndex = $('.todo-Name').index(evt.target);
-      app.lists.todoList.updateTodo(todoIndex, {name: editName});
+      app.lists.updateTodo(todoIndex, {name: editName});
       app.render();
 
     }
@@ -339,7 +354,7 @@ MyApp = (function(){
     let editPriority = evt.target.value;
     let todoIndex = $('.todo-Priority').index(evt.target);
     
-    app.lists.todoList.updateTodo(todoIndex, {priority: editPriority}); 
+    app.lists.updateTodo(todoIndex, {priority: editPriority}); 
 
     function sortingArray(a, b) {
       return b.getPriority() - a.getPriority();
@@ -362,13 +377,13 @@ MyApp = (function(){
       let editPriority = evt.target.value;
       let todoIndex = $('.todo-Priority').index(evt.target);
      
-      app.lists.todoList.updateTodo(todoIndex, {priority: editPriority});
+      app.lists.updateTodo(todoIndex, {priority: editPriority});
       
       function sortingArray(a, b) {
         return b.getPriority() - a.getPriority();
       }
 
-      app.lists.todoList.sortTodos(sortingArray);
+      app.lists.sortTodos(sortingArray);
       app.render();
 
     }
@@ -403,6 +418,7 @@ MyApp = (function(){
     $('.todo-Priority')
       .off('keyup', _EditPriorityEnter)
       .off('blur', _EditPriority);
+    $('input[type=radio]').off('click',_switchTodoList);
   }
 
 
@@ -415,12 +431,13 @@ MyApp = (function(){
     $('.todo-Priority')
       .on('keyup', _EditPriorityEnter)
       .on('blur', _EditPriority);
+    $('input[type=radio]').on('click',_switchTodoList);
   }
 
 
   app.render = function() {
 
-    let list = app.lists.todoList.getTodos();
+    let list = app.lists.getTodos();
 
     let todoView = 
       list.map(function(item, index){          
@@ -450,6 +467,11 @@ MyApp = (function(){
 
     app.$addTodoButton.click(_AddTodo);
     app.$addTodoListButton.click(_addTodoList);
+    // $("input.todoListInputs").keypress(function(evt){
+    //   if(evt.which === 13) {
+    //     _addTodoList($(evt.target).val());
+    //   }
+    // });
 
   }
 

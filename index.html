@@ -4,10 +4,10 @@
 	<link rel="stylesheet" href="css/index.css">
 	<link rel="stylesheet" href="css/font-awesome.css">
 	<title>To-Do List!</title>
-	<script type="text/javascript" src="node_modules/mustache/mustache.min.js"></script>
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="node_modules/mustache/mustache.min.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
-	<script type="text/javascript" src="js/index1.js"></script>
+	<script type="text/javascript" src="js/index2.js"></script>
 </head>
 <body>
 	<div class="box">
@@ -16,15 +16,7 @@
 	</div>
 
 	<div class="list">
-<!-- 
-		<div>
-			<input type="text" class="todoListInputs" name="" id="todoListName" 
-				   placeholder="Enter List Name E.g. Groceries">
-			<button id="addTodoList">
-				<i class="fa fa-plus" aria-hidden="true"></i>
-			</button>
-		</div>
- -->
+
 		<div>
 			Create a To-Do List!
 			<button id="add">
@@ -32,7 +24,19 @@
 			</button>
 		<div>
 
-		<div class="wrapper">
+
+		<div id="listWrapper">
+			<input type="text" class="todoListInputs" name="" id="todoListName" 
+				   placeholder="Enter List Name E.g. Groceries">
+			<button id="addTodoList">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+			</button>
+
+			<div id="todo-list"></div>
+		</div>
+
+
+		<div class="todoWrapper">
 			<div>
 				<input type="text" class="userInputs" name="" id="todoName" placeholder="Enter Item E.g. Milk">
  				<button id="submit">Add!</button>
@@ -49,7 +53,7 @@
 		$(document).ready(_onReady);
 	</script>
 	
-
+<!-- 
  	<script type="mustache/x-tmpl" id="todoView">
 		
 	{{#data}}
@@ -62,6 +66,7 @@
 	{{/data}}
 
 	</script>
+ -->
 
 </body>
 </html>
